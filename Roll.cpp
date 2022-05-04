@@ -2,7 +2,23 @@
 #define random(x) rand()%(x)
 using namespace std;
 
-bool Roll_Answer[100] = { 0 };
+class End {
+public:
+	void Normal() {
+		system("pause");
+		exit(0);
+	}
+	void StdError() {
+		cout << "Error" << endl;
+		system("pause");
+		exit(1);
+	}
+	void SerError() {
+		exit(1);
+	}
+};
+
+int Roll_Answer[100] = { 0 };
 int Roll(int faceNumber_Int, int times_Int, bool flagRecur_Bool) {
 	int turnPlace_Int = 0,rollTemp = 0;
 	bool flagtemp_Bool = true;
@@ -12,17 +28,18 @@ int Roll(int faceNumber_Int, int times_Int, bool flagRecur_Bool) {
 			if (faceNumber_Int >= times_Int) {
 				while (turnPlace_Int < times_Int) {
 					rollTemp = random(faceNumber_Int);
+					if (rollTemp == 0) {
+						rollTemp = faceNumber_Int;
+					}
+//					cout << rollTemp << endl;
 					flagtemp_Bool = true;
-					for (int i = 0; i <= times_Int; i++) {
+					for (int i = 0; i < times_Int; i++) {
 						if (Roll_Answer[i] == rollTemp) {
 							flagtemp_Bool = false;
 							break;
 						}
 					}
 					if (flagtemp_Bool) {
-						if (rollTemp == 0) {
-							rollTemp = faceNumber_Int;
-						}
 						Roll_Answer[turnPlace_Int] = rollTemp;
 						turnPlace_Int++;
 					}
@@ -32,7 +49,7 @@ int Roll(int faceNumber_Int, int times_Int, bool flagRecur_Bool) {
 				return false;
 			}
 		}else{
-			for (int i = 0; i <= times_Int; i++) {
+			for (int i = 0; i < times_Int; i++) {
 				rollTemp = random(faceNumber_Int);
 				if (rollTemp == 0) {
 					rollTemp = faceNumber_Int;
@@ -73,17 +90,17 @@ int main() {
 	if (Roll(faceNumber_Int, times_Int, flagRecur_Bool)) {
 		Roll(faceNumber_Int, times_Int, flagRecur_Bool);
 	}else {
-		cout << "Error" << endl;
-		exit(-1);
+		End().StdError();
 	}
 
-	for (int i = 0; i <= times_Int; i++) {
+	for (int i = 0; i < times_Int; i++) {
 		if (i > 0) {
 			cout << ',';
 		}
 		cout << Roll_Answer[i];
 	}
 	cout << endl;
-	system("pause");
-	return 0;
+	End().Normal();
 }
+	
+	
